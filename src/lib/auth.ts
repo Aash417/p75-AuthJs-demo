@@ -20,6 +20,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       signIn: '/auth/login',
       error: '/auth/error',
    },
+
    events: {
       async linkAccount({ user }) {
          await db.user.update({
@@ -32,7 +33,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
          });
       },
    },
+
    callbacks: {
+      async signIn({ user, account }) {
+         if (account?.provider !== 'credentials') return true;
+
+         const existingUser = await getUserById(user.id!);
+         if (!existingUser?.emailVerified) return false;
+
+         //Todo: Add 2FA check
+
+         return true;
+      },
+
       async jwt({ token }) {
          if (!token.sub) return token;
 
@@ -57,7 +70,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
          return session;
       },
    },
+
    adapter: PrismaAdapter(prisma),
+
    session: { strategy: 'jwt' },
    ...authConfig,
 });

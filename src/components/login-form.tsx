@@ -1,10 +1,16 @@
 'use client';
 
-import CardWrapper from './card-wrapper';
+import { login } from '@/app/actions/login';
 import { LoginSchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSearchParams } from 'next/navigation';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import CardWrapper from './card-wrapper';
+import FormError from './form-error';
+import FormSuccess from './form-success';
+import { Button } from './ui/button';
 import {
    Form,
    FormControl,
@@ -14,12 +20,6 @@ import {
    FormMessage,
 } from './ui/form';
 import { Input } from './ui/input';
-import { Button } from './ui/button';
-import FormError from './form-error';
-import FormSuccess from './form-success';
-import { login } from '@/app/actions/login';
-import { useState, useTransition } from 'react';
-import { useSearchParams } from 'next/navigation';
 
 export default function LoginForm() {
    const [error, setError] = useState<string | undefined>('');
@@ -46,7 +46,7 @@ export default function LoginForm() {
       startTransition(() => {
          login(values).then((data) => {
             setError(data?.error);
-            // setSuccess(data?.success);
+            setSuccess(data?.success);
             form.reset();
          });
       });

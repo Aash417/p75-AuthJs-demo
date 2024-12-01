@@ -1,10 +1,12 @@
 'use server';
 
-import { RegisterSchema } from '@/schemas';
-import { z } from 'zod';
-import bcrypt from 'bcryptjs';
-import db from '@/lib/db';
 import { getUserByEmail } from '@/data/user';
+import db from '@/lib/db';
+import { sendVerificationEmail } from '@/lib/mail';
+import { generateVerificationToken } from '@/lib/token';
+import { RegisterSchema } from '@/schemas';
+import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
 export async function register(values: z.infer<typeof RegisterSchema>) {
    const validatedFields = RegisterSchema.safeParse(values);
@@ -24,6 +26,12 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
          password: hashedPassword,
       },
    });
+
+   const verificationToken = await generateVerificationToken(email);
+   await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+   );
 
    return { success: 'User created.' };
 }
