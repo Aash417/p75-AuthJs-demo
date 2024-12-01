@@ -13,12 +13,10 @@ export async function login(values: z.infer<typeof LoginSchema>) {
    const validatedFields = LoginSchema.safeParse(values);
    if (!validatedFields.success) return { error: 'Invalid fields' };
 
-   console.log(values);
-
    const { email, password } = validatedFields.data;
 
    const existingUser = await getUserByEmail(email);
-   if (!existingUser || !existingUser.email || !existingUser.password)
+   if (!existingUser?.email || !existingUser?.password)
       return { error: 'Email does not exists!' };
 
    if (!existingUser.emailVerified) {
@@ -28,7 +26,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
          verificationToken.token,
       );
 
-      return { success: 'Confimation email sent!' };
+      return { success: 'Confirmation email sent!' };
    }
 
    try {
@@ -41,13 +39,11 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       return { success: 'logged in' };
    } catch (error) {
       if (error instanceof AuthError) {
-         switch (error.type) {
-            case 'CredentialsSignin':
-               return { error: 'Invalid credentials' };
-
-            default:
-               return { error: 'Something went wrong' };
+         if (error.type === 'CredentialsSignin') {
+            return { error: 'Invalid credentials' };
          }
+
+         return { error: 'Something went wrong' };
       }
 
       throw error;

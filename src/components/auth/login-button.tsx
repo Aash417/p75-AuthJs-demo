@@ -5,13 +5,15 @@ import { useRouter } from 'next/navigation';
 type Props = {
    children: React.ReactNode;
    mode?: 'modal' | 'redirect';
-   asChild?: boolean;
+   // asChild?: boolean;
 };
 
-export default function LoginButton({ children, mode = 'redirect' }: Props) {
+export default function LoginButton({
+   children,
+   mode = 'redirect',
+}: Readonly<Props>) {
    const router = useRouter();
    function onClick() {
-      console.log('login btn clk');
       router.push('/auth/login');
    }
 

@@ -1,12 +1,10 @@
-import LoginForm from '@/components/login-form';
-import React from 'react';
+import LoginForm from '@/components/auth/login-form';
+import { Suspense } from 'react';
 
-type Props = {};
-
-export default function Page({}: Props) {
+export default function Page() {
    return (
-      <div>
+      <Suspense fallback={<div>Loading...</div>}>
          <LoginForm />
-      </div>
+      </Suspense>
    );
 }

@@ -1,7 +1,7 @@
+import Header from '../header';
+import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import BackButton from './back-button';
-import Header from './header';
 import Social from './social';
-import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 
 type Props = {
    children: React.ReactNode;
@@ -17,7 +17,7 @@ export default function CardWrapper({
    backButtonLabel,
    backButtonHref,
    showSocial,
-}: Props) {
+}: Readonly<Props>) {
    return (
       <Card className="w-[400px] shadow-md">
          <CardHeader>
