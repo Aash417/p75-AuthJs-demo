@@ -23,3 +23,12 @@ export async function sendPasswordResetEmail(email: string, token: string) {
       html: `<p>click <a href='${resetLink}'>here</a></p>`,
    });
 }
+
+export async function sendTwoFactorTokenEmail(email: string, token: string) {
+   await resend.emails.send({
+      from: 'Aashish <onboarding@resend.dev>',
+      to: email,
+      subject: '2FA code',
+      html: `<p>Your 2FA code : ${token}</p>`,
+   });
+}

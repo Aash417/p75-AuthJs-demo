@@ -33,5 +33,5 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
       verificationToken.token,
    );
 
-   return { success: 'User created.' };
+   return { success: 'User created. Email verification mail sent.' };
 }
