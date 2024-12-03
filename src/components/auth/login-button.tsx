@@ -20,7 +20,7 @@ export default function LoginButton({
    if (mode === 'modal')
       return (
          <span onClick={onClick} className="cursor-pointer">
-            Implement modal
+            Dashboard
          </span>
       );
 

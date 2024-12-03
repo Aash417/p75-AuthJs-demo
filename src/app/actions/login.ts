@@ -91,6 +91,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
          if (error.type === 'CredentialsSignin') {
             return { error: 'Invalid credentials' };
          }
+         console.log(error);
 
          return { error: 'Something went wrong' };
       }
