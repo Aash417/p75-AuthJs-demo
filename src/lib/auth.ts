@@ -6,11 +6,14 @@ import authConfig from './auth.config';
 import db from './db';
 import { getTwoFactorConfirmationByUserId } from '@/data/tow-factor-confirmation';
 
+export type ExtendedUser = {
+   role: 'ADMIN' | 'USER';
+   isTwoFactorEnabled: boolean;
+} & DefaultSession['user'];
+
 declare module 'next-auth' {
    interface Session {
-      user: {
-         role: 'ADMIN' | 'USER';
-      } & DefaultSession['user'];
+      user: ExtendedUser;
    }
 }
 
@@ -64,6 +67,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
          if (!existingUser) return token;
 
          token.role = existingUser.role;
+         token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
          return token;
       },
@@ -74,6 +78,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
          }
          if (token.role && session.user) {
             session.user.role = token.role as UserRole;
+         }
+         if (token.isTwoFactorEnabled && session.user) {
+            session.user.isTwoFactorEnabled =
+               token.isTwoFactorEnabled as boolean;
          }
 
          return session;
