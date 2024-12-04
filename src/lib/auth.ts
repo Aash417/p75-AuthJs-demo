@@ -5,10 +5,12 @@ import NextAuth, { DefaultSession } from 'next-auth';
 import authConfig from './auth.config';
 import db from './db';
 import { getTwoFactorConfirmationByUserId } from '@/data/tow-factor-confirmation';
+import { getAccountByUserId } from '@/data/account';
 
 export type ExtendedUser = {
    role: 'ADMIN' | 'USER';
    isTwoFactorEnabled: boolean;
+   isOAuth: boolean;
 } & DefaultSession['user'];
 
 declare module 'next-auth' {
@@ -66,7 +68,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
          const existingUser = await getUserById(token.sub);
          if (!existingUser) return token;
 
+         const existingAccount = await getAccountByUserId(existingUser.id);
+
+         token.isOAuth = !!existingAccount;
          token.role = existingUser.role;
+         token.name = existingUser.name;
+         token.email = existingUser.email;
          token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
          return token;
@@ -79,9 +86,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
          if (token.role && session.user) {
             session.user.role = token.role as UserRole;
          }
-         if (token.isTwoFactorEnabled && session.user) {
+         if (session.user) {
             session.user.isTwoFactorEnabled =
                token.isTwoFactorEnabled as boolean;
+
+            session.user.name = token.name;
+            session.user.email = token.email!;
+            session.user.isOAuth = token.isOAuth as boolean;
          }
 
          return session;
