@@ -10,7 +10,7 @@ type Props = {
    allowedRole: UserRole;
 };
 
-export default function RoleGate({ children, allowedRole }: Props) {
+export default function RoleGate({ children, allowedRole }: Readonly<Props>) {
    const role = useCurrentRole();
 
    if (role !== allowedRole)

@@ -6,7 +6,7 @@ type Props = {
    label: string;
 };
 
-export default function UserInfo({ user, label }: Props) {
+export default function UserInfo({ user, label }: Readonly<Props>) {
    return (
       <Card className="w-[600px] shadow-md">
          <CardHeader>

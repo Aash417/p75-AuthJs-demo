@@ -10,5 +10,5 @@ export async function admin() {
       return { error: 'Forbidden!' };
    }
 
-   return { succes: 'Allowed' };
+   return { success: 'Allowed' };
 }

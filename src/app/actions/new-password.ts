@@ -2,10 +2,10 @@
 
 import { getPasswordRestTokenByToken } from '@/data/password-reset-token';
 import { getUserByEmail } from '@/data/user';
-import { NewPasswordSchema } from '@/schemas';
-import { z } from 'zod';
-import bcrypt from 'bcryptjs';
 import db from '@/lib/db';
+import { NewPasswordSchema } from '@/schemas';
+import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
 export async function newPassword(
    values: z.infer<typeof NewPasswordSchema>,
@@ -13,10 +13,10 @@ export async function newPassword(
 ) {
    if (!token) return { error: 'Missing token!' };
 
-   const validatedFileds = NewPasswordSchema.safeParse(values);
-   if (!validatedFileds.success) return { error: 'Invalid fields!' };
+   const validatedFields = NewPasswordSchema.safeParse(values);
+   if (!validatedFields.success) return { error: 'Invalid fields!' };
 
-   const { password } = validatedFileds.data;
+   const { password } = validatedFields.data;
 
    const existingToken = await getPasswordRestTokenByToken(token);
    if (!existingToken) return { error: 'Invalid token!' };

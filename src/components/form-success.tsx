@@ -4,7 +4,7 @@ type Props = {
    message?: string;
 };
 
-export default function FormSuccess({ message }: Props) {
+export default function FormSuccess({ message }: Readonly<Props>) {
    if (!message) return null;
 
    return (

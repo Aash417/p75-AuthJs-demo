@@ -20,7 +20,7 @@ export default function Page() {
       admin().then((data) => {
          if (data.error) toast.error('Forbidden');
 
-         if (data.succes) toast.success('Allowed');
+         if (data.success) toast.success('Allowed');
       });
    }
 
