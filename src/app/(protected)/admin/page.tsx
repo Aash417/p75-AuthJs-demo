@@ -6,24 +6,21 @@ import FormSuccess from '@/components/form-success';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UserRole } from '@prisma/client';
+import { toast } from 'sonner';
 
 export default function Page() {
    function onApiRouteClick() {
       fetch('/api/admin').then((res) => {
-         if (res.ok) console.log('ok');
-         else console.log('forbidden for now');
+         if (res.ok) toast.success('Allowed');
+         else toast.error('Forbidden');
       });
    }
 
    function onServerActionClick() {
       admin().then((data) => {
-         if (data.error) {
-            console.log(data.error);
-         }
+         if (data.error) toast.error('Forbidden');
 
-         if (data.succes) {
-            console.log(data.succes);
-         }
+         if (data.succes) toast.success('Allowed');
       });
    }
 

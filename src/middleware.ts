@@ -1,5 +1,5 @@
-import authConfig from './lib/auth.config';
 import NextAuth from 'next-auth';
+import authConfig from './lib/auth.config';
 import {
    apiAuthPrefix,
    authRoutes,
@@ -32,8 +32,8 @@ export default auth((req) => {
       return Response.redirect(new URL('/', nextUrl));
    }
 
-   console.log('route : ', req.nextUrl.pathname);
-   console.log('isloggedIn : ', isLoggedIn);
+   // console.log('route : ', req.nextUrl.pathname);
+   // console.log('isloggedIn : ', isLoggedIn);
 
    return;
 });

@@ -1,16 +1,19 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import LoginForm from './login-form';
 
 type Props = {
    children: React.ReactNode;
    mode?: 'modal' | 'redirect';
-   // asChild?: boolean;
+   asChild?: boolean;
 };
 
 export default function LoginButton({
    children,
    mode = 'redirect',
+   asChild,
 }: Readonly<Props>) {
    const router = useRouter();
    function onClick() {
@@ -19,9 +22,12 @@ export default function LoginButton({
 
    if (mode === 'modal')
       return (
-         <span onClick={onClick} className="cursor-pointer">
-            Dashboard
-         </span>
+         <Dialog>
+            <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
+            <DialogContent className="w-auto bg-transparent p-0">
+               <LoginForm />
+            </DialogContent>
+         </Dialog>
       );
 
    return (
